@@ -10,6 +10,8 @@ class Weather {
   final String description;
   final String icon;
   final int visibility;
+  final int sunrise;
+  final int sunset;
 
   Weather({
     required this.cityName,
@@ -23,6 +25,8 @@ class Weather {
     required this.description,
     required this.icon,
     required this.visibility,
+    required this.sunrise,
+    required this.sunset,
   });
 
   factory Weather.fromJson(Map<String, dynamic> json) {
@@ -38,6 +42,8 @@ class Weather {
       description: json['weather'][0]['description'] ?? '',
       icon: json['weather'][0]['icon'] ?? '',
       visibility: json['visibility'] as int,
+      sunrise: json['sys']['sunrise'] as int,
+      sunset: json['sys']['sunset'] as int,
     );
   }
 }

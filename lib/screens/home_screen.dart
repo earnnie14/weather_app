@@ -71,42 +71,55 @@ class _HomeScreenState extends State<HomeScreen> {
     final isNight = hour < 6 || hour >= 18;
 
     if (isNight) {
+      // กลางคืน — น้ำเงินเข้มมาก
       return [
-        const Color(0xFF0d0d1a),
-        const Color(0xFF1a1a2e),
-        const Color(0xFF16213e),
+        const Color(0xFF0a0a1a),
+        const Color(0xFF0d0d2b),
+        const Color(0xFF1a1a3e),
       ];
     }
     if (icon.startsWith('01')) {
+      // แดดจัด — ฟ้าสดใส
       return [
-        const Color(0xFF1a6ba0),
-        const Color(0xFF1e90c8),
-        const Color(0xFF87CEEB),
+        const Color.fromARGB(255, 255, 253, 112),
+        const Color(0xFF0099ff),
+        const Color(0xFF66ccff),
       ];
     }
     if (icon.startsWith('02') ||
         icon.startsWith('03') ||
         icon.startsWith('04')) {
+      // เมฆมาก — เทาอมฟ้า
       return [
-        const Color(0xFF4a5568),
-        const Color(0xFF2d3748),
-        const Color(0xFF1a202c),
+        const Color(0xFF5a6a7a),
+        const Color(0xFF7a8a9a),
+        const Color(0xFF9aaaba),
       ];
     }
     if (icon.startsWith('09') ||
         icon.startsWith('10') ||
         icon.startsWith('11')) {
+      // ฝนตก/พายุ — เทาเข้มอมม่วง
       return [
-        const Color(0xFF1a202c),
-        const Color(0xFF2d3748),
-        const Color(0xFF2c5282),
+        const Color(0xFF1a1a2e),
+        const Color(0xFF2d2d4e),
+        const Color(0xFF1e3a5f),
       ];
     }
     if (icon.startsWith('13')) {
+      // หิมะ — ขาวอมฟ้า
       return [
-        const Color(0xFF90cdf4),
-        const Color(0xFF63b3ed),
-        const Color(0xFF4299e1),
+        const Color(0xFFb0d4f1),
+        const Color(0xFFd6eaf8),
+        const Color(0xFFebf5fb),
+      ];
+    }
+    if (icon.startsWith('50')) {
+      // หมอก — เทาอ่อน
+      return [
+        const Color(0xFF8a9ba8),
+        const Color(0xFFa8b8c5),
+        const Color(0xFFc5d5e2),
       ];
     }
     return [
@@ -130,20 +143,28 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: _weather != null
-                ? _getBackgroundColors(_weather!.icon)
-                : [
-                    const Color(0xFF1a1a2e),
-                    const Color(0xFF16213e),
-                    const Color(0xFF0f3460),
-                  ],
-          ),
-        ),
+      body: TweenAnimationBuilder<double>(
+        tween: Tween(begin: 0, end: 1),
+        duration: const Duration(milliseconds: 800),
+        key: ValueKey(_weather?.icon ?? 'default'),
+        builder: (context, value, child) {
+          return Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: _weather != null
+                    ? _getBackgroundColors(_weather!.icon)
+                    : [
+                        const Color(0xFF1a1a2e),
+                        const Color(0xFF16213e),
+                        const Color(0xFF0f3460),
+                      ],
+              ),
+            ),
+            child: child,
+          );
+        },
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(20),
@@ -274,7 +295,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           const SizedBox(height: 30),
           // Info cards
-          _buildInfoCards(w), const SizedBox(height: 20),
+          _buildInfoCards(w), _buildSunInfo(w), const SizedBox(height: 20),
           if (_forecast.isNotEmpty) _buildForecast(),
         ],
       ),
@@ -299,6 +320,31 @@ class _HomeScreenState extends State<HomeScreen> {
             '${(w.visibility / 1000).toStringAsFixed(1)} km',
             'Visibility',
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSunInfo(Weather w) {
+    final sunrise = DateTime.fromMillisecondsSinceEpoch(w.sunrise * 1000);
+    final sunset = DateTime.fromMillisecondsSinceEpoch(w.sunset * 1000);
+    final format = DateFormat('HH:mm');
+
+    return Container(
+      margin: const EdgeInsets.only(top: 16),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _buildInfoItem(Icons.arrow_upward, '${w.tempMax.round()}°', 'High'),
+          _buildInfoItem(Icons.arrow_downward, '${w.tempMin.round()}°', 'Low'),
+          _buildInfoItem(Icons.wb_sunny, format.format(sunrise), 'Sunrise'),
+          _buildInfoItem(Icons.nights_stay, format.format(sunset), 'Sunset'),
         ],
       ),
     );
