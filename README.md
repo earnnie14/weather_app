@@ -4,31 +4,28 @@ A Flutter weather application that provides real-time weather information with a
 
 ## 📱 Features
 
-- 🌡️ Current weather conditions (temperature, humidity, wind, visibility)
-- 📅 7-Day weather forecast
-- 🔍 Search weather by city name
-- 📍 Auto-detect location via GPS
-- 🌅 Sunrise & Sunset times
-- 🎨 Dynamic background that changes with weather conditions
+- 🌡️ Current weather (temperature, humidity, wind, visibility)
+- 📅 7-Day forecast
+- 🔍 Search by city name
+- 📍 Auto GPS location
+- 🌅 Sunrise and Sunset times
+- 🎨 Dynamic background color by weather
 
 ## 🛠️ Built With
 
-- [Flutter](https://flutter.dev/) - UI Framework
-- [Dart](https://dart.dev/) - Programming Language
-- [OpenWeatherMap API](https://openweathermap.org/api) - Weather Data
-- [Geolocator](https://pub.dev/packages/geolocator) - GPS Location
-- [HTTP](https://pub.dev/packages/http) - API Requests
-
-## 📸 Screenshots
-
-*Coming soon*
+- Flutter - UI Framework
+- Dart - Programming Language
+- OpenWeatherMap API - Weather Data
+- Geolocator - GPS Location
+- HTTP - API Requests
 
 ## 🚀 Getting Started
 
-### Prerequisites
-- Flutter SDK
-- OpenWeatherMap API Key
+1. Clone the repo: git clone https://github.com/earnnie14/weather_app.git
+2. Install dependencies: flutter pub get
+3. Add API key in lib/config.dart
+4. Run: flutter run
 
-### Installation
+## 👩‍💻 Developer
 
-1. Clone the repo
+Earnnie — GitHub: @earnnie14
